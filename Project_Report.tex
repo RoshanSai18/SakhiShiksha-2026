@@ -1,0 +1,172 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\title{SakhiShiksha: Digital Literacy Platform for Women Entrepreneurs\\
+\large Project Report}
+\author{Designathon 2026 Team}
+\date{March 17, 2026}
+
+\begin{document}
+\maketitle
+\onehalfspacing
+
+\begin{abstract}
+SakhiShiksha is a mobile-first digital literacy web application designed to support Indian women entrepreneurs in learning practical financial and business skills. The platform combines bilingual educational content (English and Hindi), interactive quizzes, progress analytics, and an embedded AI tutor for contextual doubt resolution. The system is built using React, Vite, and Tailwind CSS, with local persistence for lightweight deployment and immediate usability. This report presents the motivation, problem scope, implementation details, architecture, and outcomes of the prototype.
+\end{abstract}
+
+\section{Introduction}
+Women-led micro and small businesses in India increasingly rely on digital tools such as UPI, QR payments, and online marketing. However, many first-time learners face barriers in understanding digital finance workflows, fraud prevention practices, and confidence in using mobile-first business services. SakhiShiksha addresses this gap through simple, visual, and language-accessible learning experiences.
+
+The platform is designed around three principles: (1) simplicity for low-friction onboarding, (2) contextual learning through module-based content and quizzes, and (3) personalized support through an AI tutor constrained to lesson context. The result is a guided, practical learning journey that encourages adoption of safe digital transactions and business growth practices.
+
+\section{Problem Statement}
+The target users are women entrepreneurs who need quick, trustworthy, and practical digital literacy guidance but often face constraints such as limited time, language barriers, and low technical confidence.
+
+The key problem can be formulated as follows:
+\begin{quote}
+How can we deliver an accessible, multilingual, low-cost digital literacy solution that teaches actionable financial concepts (for example UPI usage and cybersecurity), verifies learning through assessments, and offers contextual AI assistance without overwhelming first-time users?
+\end{quote}
+
+From a product perspective, the solution must:
+\begin{itemize}[leftmargin=*]
+\item Support bilingual interaction (English and Hindi).
+\item Operate in a simple mobile-first interface.
+\item Track learner progression and completion status.
+\item Offer immediate doubt resolution through a lesson-aware AI assistant.
+\item Maintain a low deployment and maintenance footprint.
+\end{itemize}
+
+\section{Technical Details}
+\subsection{Technology Stack}
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+Layer & Tools/Frameworks \\
+\midrule
+Frontend Framework & React 18.3.1 \\
+Build Tool & Vite 5.4.10 \\
+Styling & Tailwind CSS 3.4.14 + PostCSS + Autoprefixer \\
+State Management & React Context API + custom hooks \\
+Persistence & Browser localStorage \\
+AI Providers & OpenAI Chat Completions, Google Gemini GenerateContent \\
+\bottomrule
+\end{tabular}
+\caption{Core implementation stack used in the prototype.}
+\end{table}
+
+\subsection{Application Structure}
+The application follows a modular React structure:
+\begin{itemize}[leftmargin=*]
+\item \texttt{src/views}: Feature screens (Login, Home, Learn, Dashboard).
+\item \texttt{src/components}: Shared UI blocks (Header, Bottom Navigation).
+\item \texttt{src/data}: Mock modules, quiz content, localized strings, and metrics.
+\item \texttt{src/context}: Language and progress contexts.
+\item \texttt{src/hooks}: Reusable local storage hook.
+\item \texttt{src/utils}: AI integration logic with provider abstraction.
+\end{itemize}
+
+\subsection{Functional Features Implemented}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Login and Onboarding}: Lightweight phone input and skip-based fast entry.
+\item \textbf{Bilingual UI}: Runtime language toggle with string dictionaries and module-level Hindi/English content.
+\item \textbf{Learning Journey}: Intro, video lesson, lecture notes, AI Q\&A, module quiz, and result flow.
+\item \textbf{Accessibility Support}: Built-in text-to-speech read-aloud for lesson notes.
+\item \textbf{Assessment}: Multi-question quizzes with correctness feedback and retry path.
+\item \textbf{Progress Tracking}: Completion status, score storage, and dashboard indicators from persistent state.
+\item \textbf{Analytics Dashboard}: Metrics cards, weekly activity chart, module progress bars, and recommendation cards.
+\end{itemize}
+
+\subsection{AI Integration Design}
+The AI layer uses an environment-based API key (\texttt{VITE\_API\_KEY}) and dynamically routes requests:
+\begin{itemize}[leftmargin=*]
+\item Keys beginning with \texttt{sk-} route to OpenAI (\texttt{gpt-4o-mini}).
+\item Other key formats route to Gemini (\texttt{gemini-2.5-flash-lite}).
+\end{itemize}
+
+A constrained system prompt enforces:
+\begin{itemize}[leftmargin=*]
+\item language-specific response (English or Hindi),
+\item lesson-bound context usage,
+\item concise output (2--3 sentences), and
+\item tutoring tone suitable for first-time learners.
+\end{itemize}
+
+\section{System Design}
+\subsection{Architecture Overview}
+The system uses a client-centric architecture suitable for rapid deployment and hackathon-scale validation:
+\begin{enumerate}[leftmargin=*]
+\item User interacts with mobile-first React views.
+\item UI state is managed using Context API and local component state.
+\item Long-lived preferences and progress are persisted in \texttt{localStorage}.
+\item AI Q\&A calls external LLM APIs through a thin utility abstraction.
+\item Dashboard and recommendations are rendered from structured data models.
+\end{enumerate}
+
+\subsection{Component Interaction Flow}
+\begin{itemize}[leftmargin=*]
+\item \textbf{App Orchestrator}: Controls current view (login, home, learn, dashboard).
+\item \textbf{LangContext}: Governs global language and toggle behavior.
+\item \textbf{ProgressContext}: Stores module completion and quiz outcomes.
+\item \textbf{LearnView}: Orchestrates pedagogic flow across intro, video, quizzes, and results.
+\item \textbf{aiChat Utility}: Builds system prompt and invokes the selected provider endpoint.
+\end{itemize}
+
+\subsection{Data and State Design}
+\begin{itemize}[leftmargin=*]
+\item Learning content is represented as structured module and quiz JSON-like objects.
+\item Progress is keyed by module identifier and stores completion flag, score, total, and timestamp.
+\item Localization uses a dictionary pattern where each key maps to language variants.
+\item UI charts and leaderboards are currently mock-backed and can be replaced by API-driven datasets.
+\end{itemize}
+
+\subsection{Design Considerations}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Scalability}: Current design is ideal for prototype scale; backend integration can externalize progress and analytics.
+\item \textbf{Security}: API key management through environment variables is used, but production deployment should move AI calls server-side.
+\item \textbf{Reliability}: Error handling for AI API failures includes user-facing fallback messages.
+\item \textbf{Usability}: Visual hierarchy, large touch targets, and concise flows improve learnability for first-time digital users.
+\end{itemize}
+
+\section{Conclusion}
+SakhiShiksha demonstrates a practical and user-centered approach to digital literacy education for women entrepreneurs. The prototype successfully integrates multilingual learning, contextual AI tutoring, progress tracking, and module-based assessments in a simple mobile-first interface. Technically, the system achieves a strong balance between rapid development and meaningful functionality by using a modern React stack and modular architecture.
+
+Future enhancements include secure server-side AI proxying, authenticated user profiles, adaptive recommendation models based on real learner behavior, and longitudinal impact measurement on business outcomes.
+
+\section{References}
+\begin{thebibliography}{9}
+
+\bibitem{react}
+React Documentation.
+\newblock \url{https://react.dev/}
+
+\bibitem{vite}
+Vite Documentation.
+\newblock \url{https://vitejs.dev/}
+
+\bibitem{tailwind}
+Tailwind CSS Documentation.
+\newblock \url{https://tailwindcss.com/docs}
+
+\bibitem{openai}
+OpenAI API Reference: Chat Completions.
+\newblock \url{https://platform.openai.com/docs/api-reference/chat}
+
+\bibitem{gemini}
+Google AI for Developers: Gemini API.
+\newblock \url{https://ai.google.dev/gemini-api/docs}
+
+\bibitem{upi}
+National Payments Corporation of India (NPCI): UPI.
+\newblock \url{https://www.npci.org.in/what-we-do/upi/product-overview}
+
+\end{thebibliography}
+
+\end{document}
