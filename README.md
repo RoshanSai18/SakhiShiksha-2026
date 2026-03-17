@@ -7,6 +7,7 @@ Mobile-first learning platform for Indian women entrepreneurs with bilingual edu
 ## 📱 Application Screens & Features
 
 ### **Screen 1: Home Dashboard**
+![alt text](image.png)
 
 **Visual Components**:
 - SakhiShiksha logo with language toggle pill
