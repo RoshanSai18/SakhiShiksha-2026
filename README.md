@@ -26,6 +26,7 @@ Mobile-first learning platform for Indian women entrepreneurs with bilingual edu
 ---
 
 ### **Screen 2: Module Introduction**
+![alt text](image-1.png)
 
 **Visual Components**:
 - Hero card with gradient background and module emoji (💳)
@@ -45,6 +46,7 @@ Mobile-first learning platform for Indian women entrepreneurs with bilingual edu
 ---
 
 ### **Screen 3: Video & Learning Module**
+![alt text](image-2.png)
 
 **Visual Components**:
 - Full-width video player ("The Wealth Shield" example)
@@ -65,6 +67,7 @@ Mobile-first learning platform for Indian women entrepreneurs with bilingual edu
 ---
 
 ### **Screen 4: AI Tutor - Interactive Q&A**
+![alt text](image-3.png)
 
 **Visual Components**:
 - WhatsApp-style chat interface
@@ -94,6 +97,7 @@ Mobile-first learning platform for Indian women entrepreneurs with bilingual edu
 ---
 
 ### **Screen 5: Learning Dashboard**
+![alt text](image-4.png)
 
 **Visual Components**:
 - Header: "लर्निंग डैशबोर्ड" (Learning Dashboard)
